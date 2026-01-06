@@ -2,8 +2,8 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SUS Digital | Gestão de Senhas e Fluxo Nacional</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>SUS Digital | Gestão Integrada</title>
     
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -18,23 +18,36 @@
             --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
         }
 
-        body { font-family: 'Inter', sans-serif; background-color: #f8f9fa; color: #1a1a1a; }
-        .navbar-gov { background: var(--gov-blue); padding: 12px 0; position: sticky; top: 0; z-index: 1000; }
+        body { font-family: 'Inter', sans-serif; background-color: #f4f7fa; color: #1a1a1a; margin: 0; padding-bottom: 80px; }
         
-        .sidebar { background: white; border-right: 1px solid #dee2e6; min-height: 100vh; }
-        .nav-link-gov { color: #444; padding: 15px 20px; border-left: 4px solid transparent; text-decoration: none; display: block; font-weight: 600; }
+        @media (min-width: 992px) {
+            body { padding-bottom: 0; padding-left: 280px; }
+            .sidebar-desk { position: fixed; left: 0; top: 0; bottom: 0; width: 280px; background: white; border-right: 1px solid #ddd; z-index: 1000; display: flex !important; flex-direction: column; }
+            .bottom-nav { display: none !important; }
+            .main-header { padding-left: 300px !important; }
+        }
+
+        .main-header { background: var(--gov-blue); padding: 12px 20px; position: sticky; top: 0; z-index: 1050; display: flex; align-items: center; justify-content: space-between; width: 100%; }
+        .nav-link-gov { color: #444; padding: 16px 25px; border-left: 5px solid transparent; text-decoration: none; display: flex; align-items: center; font-weight: 700; transition: 0.3s; cursor: pointer; }
+        .nav-link-gov:hover { background: #f8f9fa; color: var(--gov-accent); }
         .nav-link-gov.active { background: #eef4ff; border-left-color: var(--gov-accent); color: var(--gov-accent); }
 
-        .glass-card { background: white; border-radius: 16px; box-shadow: var(--shadow); padding: 25px; border: none; margin-bottom: 20px; }
-        .triage-option { border: 2px solid #eee; border-radius: 12px; padding: 15px; transition: 0.3s; background: white; width: 100%; margin-bottom: 8px; display: flex; align-items: center; text-align: left; }
-        .triage-option:hover { border-color: var(--gov-accent); transform: translateX(5px); }
-        .color-pill { width: 10px; height: 50px; border-radius: 4px; margin-right: 15px; flex-shrink: 0; }
+        .glass-card { background: white; border-radius: 24px; box-shadow: var(--shadow); padding: 30px; border: none; margin-bottom: 20px; }
+        .triage-option { border: 2px solid #f0f0f0; border-radius: 18px; padding: 18px; transition: 0.3s; background: white; width: 100%; margin-bottom: 12px; display: flex; align-items: center; text-align: left; }
+        .triage-option:hover { border-color: var(--gov-accent); background-color: #fcfdff; transform: translateX(4px); }
+        .color-pill { width: 12px; height: 55px; border-radius: 6px; margin-right: 20px; flex-shrink: 0; }
 
-        /* Estilo da Senha no Dashboard */
-        .badge-senha { font-family: 'Monaco', 'Courier New', monospace; background: #e9ecef; color: var(--gov-blue); border: 1px solid #ced4da; padding: 4px 8px; border-radius: 6px; font-weight: 800; font-size: 0.9rem; }
-        
-        .unit-filter-select { background: #eef2f7; border: 1px solid #ddd; font-weight: 700; padding: 8px 15px; border-radius: 8px; width: 100%; }
-        #map { height: 320px; width: 100%; border-radius: 12px; }
+        .senha-display { background: #f0f5ff; border: 2px dashed var(--gov-accent); border-radius: 20px; padding: 25px; margin: 20px 0; }
+        .badge-senha { font-family: 'Monaco', monospace; background: #333; color: white; padding: 4px 10px; border-radius: 6px; font-weight: bold; font-size: 0.85rem; }
+
+        #map { height: 250px; width: 100%; border-radius: 16px; border: 1px solid #ddd; margin-top: 15px; }
+
+        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: white; display: flex; justify-content: space-around; padding: 12px 0; box-shadow: 0 -5px 20px rgba(0,0,0,0.05); z-index: 1000; border-top: 1px solid #eee; }
+        .nav-item-m { text-align: center; color: #888; text-decoration: none; font-size: 11px; font-weight: 700; flex: 1; }
+        .nav-item-m.active { color: var(--gov-accent); }
+        .nav-item-m i { font-size: 20px; display: block; margin-bottom: 3px; }
+
+        .credit-box { font-size: 11px; color: #aaa; margin-top: auto; padding: 20px; border-top: 1px solid #eee; }
         .hidden { display: none !important; }
         .fade-in { animation: fadeIn 0.4s ease-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
@@ -42,170 +55,184 @@
 </head>
 <body>
 
-<nav class="navbar-gov">
-    <div class="container-fluid d-flex align-items-center">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/1/11/Gov.br_logo.svg" width="90" style="filter: brightness(0) invert(1);">
-        <div class="ms-3 ps-3 border-start text-white">
-            <span class="d-block fw-bold">MINISTÉRIO DA SAÚDE</span>
-            <small class="opacity-75">Controle Nacional de Senhas e Fluxo</small>
+<aside class="sidebar-desk d-none shadow-sm">
+    <div class="p-4 border-bottom text-center">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/1/11/Gov.br_logo.svg" width="110">
+        <p class="small text-muted mt-2 mb-0">Portal de Saúde</p>
+    </div>
+    <nav class="mt-3">
+        <a onclick="showView('paciente')" class="nav-link-gov active" id="d-nav-paciente"><i class="fas fa-hospital-user me-3"></i> Atendimento</a>
+        <a onclick="showView('gestor')" class="nav-link-gov" id="d-nav-gestor"><i class="fas fa-chart-line me-3"></i> Painel de Gestão</a>
+        <div class="p-4 mt-4 bg-light mx-3 rounded">
+            <h6 class="small fw-bold text-muted mb-3">TESTES DE ESTRESSE</h6>
+            <button class="btn btn-danger btn-sm w-100 mb-2 fw-bold" onclick="simulateOutbreak()">SIMULAR SURTO ALEATÓRIO</button>
+            <button class="btn btn-outline-secondary btn-sm w-100" onclick="resetDB()">Zerar Dados</button>
+        </div>
+    </nav>
+    <div class="credit-box">
+        <p class="mb-0 text-uppercase fw-bold">Projeto Experimental</p>
+        <p class="mb-0">Desenvolvido por:</p>
+        <a href="https://www.linkedin.com/in/isaaac/"><span class="text-dark fw-bold">Isaac de Melo Rocha</span></a>
+    </div>
+</aside>
+
+<header class="main-header">
+    <div class="d-flex align-items-center">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/1/11/Gov.br_logo.svg" width="80" class="d-lg-none" style="filter: brightness(0) invert(1);">
+        <div class="text-white ms-2">
+            <span class="fw-bold d-block small">MINISTÉRIO DA SAÚDE</span>
+            <small class="opacity-75" style="font-size: 10px;">Sistema Nacional de Gestão</small>
         </div>
     </div>
-</nav>
+    <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Logo_SUS.svg" width="45">
+</header>
 
-<div class="container-fluid">
-    <div class="row">
-        <aside class="col-lg-2 p-0 sidebar d-none d-lg-block">
-            <div class="p-4 small text-muted fw-bold">MENU PRINCIPAL</div>
-            <a href="#" onclick="showView('paciente')" id="n-paciente" class="nav-link-gov active"><i class="fas fa-id-card me-2"></i> Nova Triagem</a>
-            <a href="#" onclick="showView('gestor')" id="n-gestor" class="nav-link-gov"><i class="fas fa-chart-line me-2"></i> BI de Unidades</a>
-            <div class="p-4 mt-4">
-                <button class="btn btn-danger w-100 mb-2 btn-sm fw-bold shadow-sm" onclick="simulateOutbreak()">SIMULAR SURTO</button>
-                <button class="btn btn-outline-secondary w-100 btn-sm" onclick="resetDB()">LIMPAR DADOS</button>
+<div class="container-fluid py-4">
+    
+    <section id="view-paciente" class="fade-in">
+        <div class="glass-card mx-auto" style="max-width: 600px;">
+            <div id="p-step-1">
+                <h3 class="fw-800 mb-2">Identificação</h3>
+                <p class="text-muted mb-4">Insira os dados do cidadão para iniciar.</p>
+                <div class="mb-3">
+                    <label class="form-label small fw-bold text-secondary">Nome completo</label>
+                    <input type="text" id="p-nome" class="form-control form-control-lg" placeholder="Digite aqui">
+                </div>
+                <div class="mb-4">
+                    <label class="form-label small fw-bold text-secondary">CPF</label>
+                    <input type="text" id="p-cpf" class="form-control form-control-lg" placeholder="000.000.000-00">
+                </div>
+                <button class="btn btn-primary btn-lg w-100 fw-bold py-3 shadow" onclick="toStep2()">CONTINUAR <i class="fas fa-arrow-right ms-2"></i></button>
             </div>
-        </aside>
 
-        <main class="col-lg-10 p-4">
-            
-            <section id="view-paciente" class="fade-in">
-                <div class="glass-card mx-auto" style="max-width: 700px;">
-                    <div id="p-step-1">
-                        <h3 class="fw-bold mb-4">Admissão Digital</h3>
-                        <div class="row g-3 mb-4">
-                            <div class="col-md-8"><label class="form-label small fw-bold">NOME</label><input type="text" id="p-nome" class="form-control form-control-lg"></div>
-                            <div class="col-md-4"><label class="form-label small fw-bold">CPF</label><input type="text" id="p-cpf" class="form-control form-control-lg" placeholder="000.000.000-00"></div>
-                        </div>
-                        <button class="btn btn-primary btn-lg w-100 py-3 fw-bold" onclick="toStep2()">PRÓXIMO <i class="fas fa-arrow-right ms-2"></i></button>
-                    </div>
+            <div id="p-step-2" class="hidden">
+                <h4 class="fw-800 mb-2">Avaliação de Urgência</h4>
+                <p class="text-muted mb-4">Qual é o estado atual do paciente?</p>
+                <div id="options-box"></div>
+                <button class="btn btn-link w-100 text-muted mt-2" onclick="showStep(1)">Voltar</button>
+            </div>
 
-                    <div id="p-step-2" class="hidden">
-                        <h4 class="fw-bold mb-3 text-center">Classificação Manchester</h4>
-                        <div id="options-box"></div>
-                    </div>
+            <div id="p-step-3" class="hidden text-center fade-in">
+                <div class="mb-3"><i class="fas fa-check-circle text-success fa-3x"></i></div>
+                <h2 class="fw-800">Pronto!</h2>
+                <p class="text-muted">Apresente a senha abaixo na unidade indicada.</p>
+                
+                <div class="senha-display">
+                    <small class="fw-bold text-muted text-uppercase d-block mb-1">Sua Senha</small>
+                    <h1 class="display-1 fw-900 text-primary m-0" id="res-senha">---</h1>
+                </div>
+                
+                <div class="alert alert-primary py-3 mb-1">
+                    <span class="fs-5 fw-bold" id="res-unidade"></span>
+                </div>
+                <div id="map"></div>
+                <button class="btn btn-primary btn-lg w-100 mt-4 fw-bold shadow" onclick="location.reload()">NOVO ATENDIMENTO</button>
+            </div>
+        </div>
+    </section>
 
-                    <div id="p-step-3" class="hidden text-center">
-                        <h2 class="fw-800 mb-0">Triagem Finalizada</h2>
-                        <div class="p-4 my-3 bg-light rounded-4 border">
-                            <small class="fw-bold text-muted d-block mb-1">APRESENTE ESTA SENHA NA RECEPÇÃO</small>
-                            <h1 class="display-2 fw-900 text-primary m-0" id="res-senha">---</h1>
-                        </div>
-                        <div class="alert alert-primary py-2 small fw-bold mb-3"><i class="fas fa-map-pin me-2"></i><span id="res-unidade"></span></div>
-                        <div id="map"></div>
-                        <button class="btn btn-primary btn-lg mt-4 px-5 fw-bold rounded-pill" onclick="location.reload()">NOVO ATENDIMENTO</button>
+    <section id="view-gestor" class="hidden fade-in">
+        <div class="row align-items-center mb-4">
+            <div class="col-md-6"><h3 class="fw-800 m-0">BI de Gestão de Rede</h3></div>
+            <div class="col-md-6 text-md-end mt-3 mt-md-0">
+                <select id="unit-filter" class="form-select border-2 fw-bold d-inline-block w-auto" onchange="renderDashboard()">
+                    <option value="GERAL">Todas as Unidades</option>
+                    <option value="UPA Santana">UPA Santana</option>
+                    <option value="AMA Sacomã">AMA Sacomã</option>
+                    <option value="UBS Consolação">UBS Consolação</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="row g-3 mb-4 text-center">
+            <div class="col-6 col-md-3"><div class="glass-card p-3"><small class="fw-bold text-muted">ATENDIMENTOS</small><h2 id="k-total" class="fw-800">0</h2></div></div>
+            <div class="col-6 col-md-3"><div class="glass-card p-3 text-danger"><small class="fw-bold">CASOS GRAVES</small><h2 id="k-red" class="fw-800">0</h2></div></div>
+            <div class="col-6 col-md-3"><div class="glass-card p-3 text-primary"><small class="fw-bold">TEMPO MÉDIO</small><h2 class="fw-800">12m</h2></div></div>
+            <div class="col-6 col-md-3"><div class="glass-card p-3 text-success"><small class="fw-bold">ECONOMIA (EST.)</small><h2 id="k-money" style="font-size: 1.1rem;" class="fw-800">R$ 0</h2></div></div>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-lg-5">
+                <div class="glass-card" style="min-height: 450px;">
+                    <h6 class="fw-bold border-bottom pb-2 mb-4 text-center">DISTRIBUIÇÃO DE RISCO</h6>
+                    <canvas id="chartPrio"></canvas>
+                </div>
+            </div>
+            <div class="col-lg-7">
+                <div class="glass-card p-0 overflow-hidden" style="min-height: 450px;">
+                    <div class="p-3 border-bottom bg-light fw-bold">Live Feed: <span id="label-view">GERAL</span></div>
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0 small">
+                            <thead class="table-light"><tr><th class="ps-3">HORA</th><th>SENHA</th><th>PACIENTE</th><th>UNIDADE</th></tr></thead>
+                            <tbody id="tbody-gestor"></tbody>
+                        </table>
                     </div>
                 </div>
-            </section>
-
-            <section id="view-gestor" class="hidden fade-in">
-                <div class="row align-items-center mb-4">
-                    <div class="col-md-6"><h3 class="fw-bold m-0">Monitoramento Gerencial</h3></div>
-                    <div class="col-md-6">
-                        <select class="unit-filter-select" id="unit-filter" onchange="renderDashboard()">
-                            <option value="GERAL">Visão Consolidada (Rede)</option>
-                            <optgroup label="UPAs - Emergência">
-                                <option value="UPA Santana">UPA Santana</option>
-                                <option value="UPA Vergueiro">UPA Vergueiro</option>
-                            </optgroup>
-                            <optgroup label="AMAs - Urgência">
-                                <option value="AMA Eng. Goulart">AMA Eng. Goulart</option>
-                                <option value="AMA Sacomã">AMA Sacomã</option>
-                            </optgroup>
-                            <optgroup label="UBSs - Atenção Básica">
-                                <option value="UBS Consolação">UBS Consolação</option>
-                                <option value="UBS Vila Mariana">UBS Vila Mariana</option>
-                            </optgroup>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="row g-3 mb-4">
-                    <div class="col-md-3"><div class="glass-card text-center"><small class="fw-bold text-muted">TOTAL</small><h2 id="k-total" class="fw-bold m-0">0</h2></div></div>
-                    <div class="col-md-3"><div class="glass-card text-center text-danger"><small class="fw-bold">CRÍTICOS</small><h2 id="k-red" class="fw-bold m-0">0</h2></div></div>
-                    <div class="col-md-3"><div class="glass-card text-center text-primary"><small class="fw-bold">TEMPO MÉDIO</small><h2 class="fw-bold m-0">12m</h2></div></div>
-                    <div class="col-md-3"><div class="glass-card text-center text-success"><small class="fw-bold">ROI ESTIMADO</small><h2 id="k-money" class="fw-bold m-0" style="font-size: 1.1rem;">R$ 0</h2></div></div>
-                </div>
-
-                <div class="row g-4">
-                    <div class="col-lg-5">
-                        <div class="glass-card"><h6 class="fw-bold mb-4">DISTRIBUIÇÃO POR RISCO (%)</h6><canvas id="chartPrio"></canvas></div>
-                    </div>
-                    <div class="col-lg-7">
-                        <div class="glass-card p-0 overflow-hidden">
-                            <div class="p-3 border-bottom fw-bold bg-light d-flex justify-content-between">
-                                <span>Monitor de Fila: <span id="label-view">GERAL</span></span>
-                                <small class="text-primary"><i class="fas fa-sync-alt fa-spin"></i> Atualizando...</small>
-                            </div>
-                            <div class="table-responsive" style="max-height: 380px;">
-                                <table class="table table-hover align-middle mb-0">
-                                    <thead class="bg-light small">
-                                        <tr><th>HORA</th><th>SENHA</th><th>CIDADÃO</th><th>UNIDADE</th><th>STATUS</th></tr>
-                                    </thead>
-                                    <tbody id="tbody-gestor"></tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </main>
-    </div>
+            </div>
+        </div>
+    </section>
 </div>
+
+<nav class="bottom-nav">
+    <a onclick="showView('paciente')" class="nav-item-m active" id="m-nav-paciente"><i class="fas fa-plus-circle"></i>ATENDER</a>
+    <a onclick="showView('gestor')" class="nav-item-m" id="m-nav-gestor"><i class="fas fa-chart-pie"></i>GESTOR</a>
+    <a onclick="simulateOutbreak()" class="nav-item-m text-danger"><i class="fas fa-bolt"></i>SURTO</a>
+</nav>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
-    let db = JSON.parse(localStorage.getItem('saude_v17_db')) || [];
+    let db = JSON.parse(localStorage.getItem('saude_os_v21_db')) || [];
     let map = null, chartPrio = null;
 
     const redePublica = [
         { n: "UPA Santana", c: [-23.5010, -46.6200], type: "UPA" },
-        { n: "UPA Vergueiro", c: [-23.5650, -46.6380], type: "UPA" },
-        { n: "AMA Eng. Goulart", c: [-23.5005, -46.5122], type: "AMA" },
         { n: "AMA Sacomã", c: [-23.5950, -46.6020], type: "AMA" },
-        { n: "UBS Consolação", c: [-23.5580, -46.6600], type: "UBS" },
-        { n: "UBS Vila Mariana", c: [-23.5891, -46.6347], type: "UBS" }
+        { n: "UBS Consolação", c: [-23.5580, -46.6600], type: "UBS" }
     ];
 
-    const niveis = [
-        { id: 'EMERGÊNCIA', cor: '#e52207', desc: 'Imediato: Risco de morte.' },
-        { id: 'MUITO URGENTE', cor: '#ff8c00', desc: 'Urgente: Risco de agravamento.' },
-        { id: 'URGENTE', cor: '#ffbe00', desc: 'Moderado: Febre ou dor persistente.' },
-        { id: 'POUCO URGENTE', cor: '#00a335', desc: 'Leve: Sintomas gripais ou rotina.' },
-        { id: 'NÃO URGENTE', cor: '#0076bb', desc: 'Não Urgente: Renovação de receitas.' }
+    const niveisManchester = [
+        { id: 'EMERGÊNCIA', cor: '#e52207', desc: 'Risco de morte: Imediato.', cat: 'UPA' },
+        { id: 'MUITO URGENTE', cor: '#ff8c00', desc: 'Gravíssimo: Atendimento rápido.', cat: 'UPA' },
+        { id: 'URGENTE', cor: '#ffbe00', desc: 'Moderado: Requer cuidado.', cat: 'AMA' },
+        { id: 'POUCO URGENTE', cor: '#00a335', desc: 'Leve: Pode aguardar.', cat: 'UBS' },
+        { id: 'NÃO URGENTE', cor: '#0076bb', desc: 'Rotina: Sem urgência.', cat: 'UBS' }
     ];
 
     function showView(v) {
-        document.getElementById('view-paciente').classList.toggle('hidden', v !== 'paciente');
-        document.getElementById('view-gestor').classList.toggle('hidden', v !== 'gestor');
-        document.getElementById('n-paciente').classList.toggle('active', v === 'paciente');
-        document.getElementById('n-gestor').classList.toggle('active', v === 'gestor');
+        document.querySelectorAll('section').forEach(s => s.classList.add('hidden'));
+        document.getElementById('view-' + v).classList.remove('hidden');
+        document.querySelectorAll('.nav-link-gov, .nav-item-m').forEach(n => n.classList.remove('active'));
+        document.getElementById('d-nav-' + v)?.classList.add('active');
+        document.getElementById('m-nav-' + v)?.classList.add('active');
         if(v === 'gestor') renderDashboard();
     }
 
-    function toStep2() {
-        if(!document.getElementById('p-nome').value) return alert("Por favor, informe seu nome.");
+    function showStep(s) {
         document.getElementById('p-step-1').classList.add('hidden');
-        document.getElementById('p-step-2').classList.remove('hidden');
+        document.getElementById('p-step-2').classList.add('hidden');
+        document.getElementById('p-step-3').classList.add('hidden');
+        document.getElementById(`p-step-${s}`).classList.remove('hidden');
+    }
+
+    function toStep2() {
+        if(!document.getElementById('p-nome').value) return alert("Por favor, preencha o nome.");
+        showStep(2);
         const box = document.getElementById('options-box');
         box.innerHTML = '';
-        niveis.forEach(n => {
-            box.innerHTML += `<button class="triage-option" onclick="finalizar('${n.id}')">
+        niveisManchester.forEach(n => {
+            box.innerHTML += `<button class="triage-option" onclick="finalizar('${n.id}', '${n.cat}')">
                 <div class="color-pill" style="background:${n.cor}"></div>
                 <div><strong>${n.id}</strong><br><small class="text-muted">${n.desc}</small></div>
             </button>`;
         });
     }
 
-    function finalizar(prio) {
-        let cat = (prio === 'EMERGÊNCIA' || prio === 'MUITO URGENTE') ? "UPA" : (prio === 'URGENTE' ? "AMA" : "UBS");
-        let unidadesValidas = redePublica.filter(u => u.type === cat);
-        let target = unidadesValidas[Math.floor(Math.random() * unidadesValidas.length)];
-
-        // GERAÇÃO DA SENHA
-        const senha = `${cat.substring(0,3)}-${Math.floor(100+Math.random()*900)}`;
-
-        document.getElementById('p-step-2').classList.add('hidden');
-        document.getElementById('p-step-3').classList.remove('hidden');
+    function finalizar(prio, cat) {
+        const target = redePublica.find(u => u.type === cat) || redePublica[0];
+        const senha = `${cat}-${Math.floor(100+Math.random()*899)}`;
+        showStep(3);
         document.getElementById('res-senha').innerText = senha;
-        document.getElementById('res-unidade').innerText = `${target.n} (${cat})`;
+        document.getElementById('res-unidade').innerText = target.n;
 
         setTimeout(() => {
             if(map) map.remove();
@@ -216,37 +243,34 @@
 
         db.push({ 
             nome: document.getElementById('p-nome').value, 
-            prio, senha, unidade: target.n, cat, 
+            prio, senha, unidade: target.n,
             hora: new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'}) 
         });
-        localStorage.setItem('saude_v17_db', JSON.stringify(db));
+        localStorage.setItem('saude_os_v21_db', JSON.stringify(db));
     }
 
     function renderDashboard() {
         const filter = document.getElementById('unit-filter').value;
         const filteredData = filter === "GERAL" ? db : db.filter(p => p.unidade === filter);
-        
-        document.getElementById('label-view').innerText = filter;
         const tbody = document.getElementById('tbody-gestor');
         tbody.innerHTML = '';
-        let reds = 0;
-        let counts = { 'EMERGÊNCIA': 0, 'MUITO URGENTE': 0, 'URGENTE': 0, 'POUCO URGENTE': 0, 'NÃO URGENTE': 0 };
+        let reds = 0, counts = { EMERGÊNCIA: 0, "MUITO URGENTE": 0, URGENTE: 0, "POUCO URGENTE": 0, "NÃO URGENTE": 0 };
 
         filteredData.slice().reverse().forEach(p => {
-            if(p.prio === 'EMERGÊNCIA') reds++;
-            counts[p.prio]++;
+            if(p.prio === 'EMERGÊNCIA' || p.prio === 'MUITO URGENTE') reds++;
+            if(counts.hasOwnProperty(p.prio)) counts[p.prio]++;
             tbody.innerHTML += `<tr>
-                <td class="small text-muted">${p.hora}</td>
+                <td class="ps-3">${p.hora}</td>
                 <td><span class="badge-senha">${p.senha}</span></td>
                 <td><strong>${p.nome}</strong></td>
                 <td><small class="text-muted">${p.unidade}</small></td>
-                <td><span class="badge" style="background:${niveis.find(n=>n.id===p.prio).cor}">${p.prio}</span></td>
             </tr>`;
         });
 
         document.getElementById('k-total').innerText = filteredData.length;
         document.getElementById('k-red').innerText = reds;
         document.getElementById('k-money').innerText = "R$ " + (filteredData.length * 480).toLocaleString();
+        document.getElementById('label-view').innerText = filter;
 
         const ctx = document.getElementById('chartPrio').getContext('2d');
         if(chartPrio) chartPrio.destroy();
@@ -256,22 +280,23 @@
                 labels: Object.keys(counts),
                 datasets: [{ data: Object.values(counts), backgroundColor: ['#e52207','#ff8c00','#ffbe00','#00a335','#0076bb'], borderWidth: 0 }]
             },
-            options: { cutout: '70%', plugins: { legend: { position: 'bottom' } } }
+            options: { cutout: '75%', plugins: { legend: { position: 'bottom' } } }
         });
     }
 
     function simulateOutbreak() {
-        const nomes = ["Ricardo", "Clara", "Bruno", "Gabriel", "Sonia", "Marcos", "Enzo", "Julia"];
+        const nomes = ["Ana", "Pedro", "Lucas", "Maria", "Jorge", "Carla"];
         nomes.forEach(n => {
-            const u = redePublica[Math.floor(Math.random()*redePublica.length)];
-            const senha = `${u.type.substring(0,3)}-${Math.floor(100+Math.random()*900)}`;
-            db.push({ nome: n, prio: u.type === 'UPA' ? 'EMERGÊNCIA' : 'NORMAL', senha, unidade: u.n, cat: u.type, hora: "21:05" });
+            const nivel = niveisManchester[Math.floor(Math.random()*niveisManchester.length)];
+            const unidade = redePublica.find(u => u.type === nivel.cat);
+            db.push({ nome: n, prio: nivel.id, senha: `${nivel.cat}-SIM`, unidade: unidade.n, hora: new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'}) });
         });
-        localStorage.setItem('saude_v17_db', JSON.stringify(db));
+        localStorage.setItem('saude_os_v21_db', JSON.stringify(db));
         renderDashboard();
     }
 
-    function resetDB() { localStorage.removeItem('saude_v17_db'); location.reload(); }
+    function resetDB() { if(confirm("Zerar todos os dados?")) { localStorage.removeItem('saude_os_v21_db'); location.reload(); } }
+    
     renderDashboard();
 </script>
 </body>
